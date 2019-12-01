@@ -26,12 +26,7 @@ import Adafruit_DHT
 import http.client as http
 import urllib
 import json
-
-import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)
-GPIOPin=11
-GPIO.setup(GPIOPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
+ 
 deviceId="Dr0jCgEb"
 deviceKey="vqAFEF62vYgf9lQo"
 
@@ -80,17 +75,10 @@ while True:
 # the results will be null (because Linux can't
 # guarantee the timing of calls to read the sensor).
 # If this happens try again!
-	SwitchStatus = GPIO.input(GPIOPin)
-	if(SwitchStatus == 0):
-		print('Button pressed')
-	else:
-		print('Button released')
-
 	if humidity is not None and temperature is not None:
 		print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
 		payload = {"datapoints":[{"dataChnId":"humidity002","values":{"value":humidity}},
-			{"dataChnId":"temper001","values":{"value":temperature}},
-			{"dataChnId":"switch003","values":{"value":SwitchStatus}}]} 
+			{"dataChnId":"temper001","values":{"value":temperature}}]} 
 		post_to_mcs(payload)
 	else:
 		print('Failed to get reading. Try again!')
